@@ -1,0 +1,85 @@
+#=GCal4Ruby
+#
+#==Introduction
+#GCal4Ruby is a full featured wrapper for the google calendar API.  GCal4Ruby implements
+#all of the functionality available through the Google Calnedar API, including permissions,
+#attendees, reminders and event recurrence.  
+#
+#==Author and Contact Information
+#GCal4Ruby was created and is maintained by {Mike Reich}[mailto:mike@seabourneconsulting.com] 
+#and is licenses under the GPL v2.  Feel free to use and update, but be sure to contribute your
+#code back to the project and attribute as required by the license.
+#===Website
+#http://rubyforge.org/projects/gcal4ruby/
+#
+#==Description
+#GCal4Ruby has three major components: the service, calendar and event objects.  Each service
+#has many calendars, which in turn have many events.  Each service is the representation of a
+#google account, and thus must be successfully authenticated using valid Google Calendar
+#account credentials.  
+#
+#==Examples
+#Below are some common usage examples.  For more examples, check the documentation.
+#===Service
+#1. Authenticate
+#    service = Service.new
+#    service.authenticate("user@gmail.com", "password")
+#
+#2. Get Calendar List
+#    calendars = service.calendars
+#
+#===Calendar
+#All usages assume a successfully authenticated Service.
+#1. Create a new Calendar
+#    cal = Calendar.new(service)
+#
+#2. Find an existing Calendar
+#    cal = Calendar.find(service, "New Calendar", :first)
+#
+#3. Find all calendars containing the search term
+#    cal = Calendar.find(service, "Soccer Team")
+#
+#4. Find a calendar by ID
+#    cal = Calendar.find(service, id, :first)
+#===Event
+#All usages assume a successfully authenticated Service and valid Calendar.
+#1. Create a new Event
+#    event = Event.new(calendar)
+#    event.title = "Soccer Game"
+#    event.start = Time.parse("12-06-2009 at 12:30 PM")
+#    event.end = Time.parse("12-06-2009 at 1:30 PM")
+#    event.where = "Merry Playfields"
+#    event.save
+#
+#2. Find an existing Event
+#    event = Event.find(cal, "Soccer Game", {:scope => :first})
+#
+#3. Find all events containing the search term
+#    event = Event.find(cal, "Soccer Game")
+#
+#4. Create a recurring event for every saturday
+#    event = Event.new(calendar)
+#    event.title = "Baseball Game"
+#    event.where = "Municipal Stadium"
+#    event.recurrence = Recurrence.new
+#    event.recurrence.start = Time.parse("13-06-2009 at 4:30 PM")
+#    event.recurrence.end = Time.parse("13-06-2009 at 6:30 PM")
+#    event.recurrence.frequency = {"weekly" => ["SA"]}
+#    event.save 
+#
+#5. Create an event with a 15 minute email reminder
+#    event = Event.new(calendar)
+#    event.title = "Dinner with Kate"
+#    event.start = Time.parse("20-06-2009 at 5 pm")
+#    event.end = Time.parse("20-06-209 at 8 pm")
+#    event.where = "Luigi's"
+#    event.reminder = {:minutes => 15, :method => 'email'}
+#    event.save
+#
+#6. Create an event with attendees
+#    event = Event.new(calendar)
+#    event.title = "Dinner with Kate"
+#    event.start = Time.parse("20-06-2009 at 5 pm")
+#    event.end = Time.parse("20-06-209 at 8 pm")
+#    event.attendees => {:name => "Kate", :email => "kate@gmail.com"}
+#    event.save
