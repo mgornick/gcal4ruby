@@ -1,4 +1,6 @@
 #=CHANGELOG
+#==version 0.3.1_AuthSub
+#* Git repo by mgornick to implement Authsub authentication into the GCal4Ruby gem
 #==version 0.3.1
 #* Fixed Event.find method to work with secondary calendars and google apps accounts.  Fix provided by groesser3.
 #* Added max results to Calendar.find.
