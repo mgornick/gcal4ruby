@@ -269,19 +269,20 @@ module GCal4Ruby
       return http
     end
 
-    # def auth_header(header)
-    #       if @auth_token
-    #         if header
-    #           header.merge!({'Authorization' => "GoogleLogin auth=#{@auth_token}", "GData-Version" => "2.1"})
-    #         else 
-    #           header = {'Authorization' => "GoogleLogin auth=#{@auth_token}", "GData-Version" => "2.1"}
-    #         end
-    #       end
-    #       return header
-    #     end
+    def auth_header_client_login(header)
+      if @auth_token
+        if header
+          header.merge!({'Authorization' => "GoogleLogin auth=#{@auth_token}", "GData-Version" => "2.1"})
+        else 
+          header = {'Authorization' => "GoogleLogin auth=#{@auth_token}", "GData-Version" => "2.1"}
+        end
+      end
+      
+      return header
+    end
     
     #auth header that uses google authsub 
-    def auth_header(header)
+    def auth_header_authsub(header)
       if @auth_token
       	if header
       	  header.merge!({'Authorization' => "AuthSub token=#{@auth_token}", "GData-Version" => "2.1"})
@@ -292,6 +293,14 @@ module GCal4Ruby
       return header
     end
     
+    # routes the authentication to the proper header based upon auth type
+    def auth_header_authsub(header)
+      if @auth_type == 'AuthSub'
+        return auth_header_authsub(header)
+      elsif @auth_type == 'ClientLogin'
+        return auth_header_client_login(header)
+      end
+    end
     
   end
 end
