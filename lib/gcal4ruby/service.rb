@@ -19,15 +19,18 @@ module GCal4Ruby
 
 class Service < Base
   #Convenience attribute contains the currently authenticated account name
-  attr_reader :account
+  attr_accessor :account
       
   # The token returned by the Google servers, used to authorize all subsequent messages
-  attr_reader :auth_token
+  attr_accessor :auth_token
   
   # Determines whether GCal4Ruby ensures a calendar is public.  Setting this to false can increase speeds by 
   # 50% but can cause errors if you try to do something to a calendar that is not public and you don't have
   # adequate permissions
   attr_accessor :check_public
+  
+  #added auth type to account for differences in headers between ClientLogin and Authsub
+  attr_accessor :auth_type
   
   #Accepts an optional attributes hash for initialization values
   def initialize(attributes = {})
@@ -46,10 +49,19 @@ class Service < Base
     if ret.class == Net::HTTPOK
       @auth_token = ret.read_body.to_a[2].gsub("Auth=", "").strip
       @account = username
+      @auth_type = 'ClientLogin'
       return true
     else
       raise AuthenticationFailed
     end
+  end
+  
+  # added authsub authentication.  pass in the upgraded authsub token and the username/email address
+  def authsub_authenticate(authsub_token, account)
+    @auth_token = authsub_token
+    @account = account
+    @auth_type = 'AuthSub'
+    return true
   end
 
   #Returns an array of Calendar objects for each calendar associated with 
