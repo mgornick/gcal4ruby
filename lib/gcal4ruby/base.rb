@@ -294,7 +294,7 @@ module GCal4Ruby
     end
     
     # routes the authentication to the proper header based upon auth type
-    def auth_header_authsub(header)
+    def auth_header(header)
       if @auth_type == 'AuthSub'
         return auth_header_authsub(header)
       elsif @auth_type == 'ClientLogin'
